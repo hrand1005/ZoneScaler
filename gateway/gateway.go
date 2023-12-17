@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	fmt.Println("Gateway process")
+	fmt.Println("Starting gateway")
 }
