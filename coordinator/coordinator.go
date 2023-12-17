@@ -1,9 +1,9 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
 )
 
 func main() {
-    fmt.Println("Coordinator process")
+	fmt.Println("Coordinator process")
 }
