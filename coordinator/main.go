@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"github.com/phuslu/log"
 	"net/http"
 )
 
@@ -15,6 +14,8 @@ func main() {
 	// Start heartbeat checker in a separate goroutine
 	go StartHeartbeatChecker(coordinator)
 
-	fmt.Println("Coordinator server started on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Info().Msg("Coordinator server started on :8080")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal().Err(err).Msg("Failed to start HTTP server")
+	}
 }

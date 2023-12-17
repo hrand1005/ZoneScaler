@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"github.com/phuslu/log"
 	"time"
 )
 
@@ -18,7 +18,7 @@ func checkHeartbeat(c *Coordinator) {
 	defer c.nodesMutex.Unlock()
 	for id, node := range c.nodes {
 		if time.Since(node.LastHeartbeat) > time.Minute {
-			log.Printf("Node %s is inactive. Removing node.\n", id)
+			log.Warn().Str("node_id", id).Msg("Node is inactive. Removing node")
 			delete(c.nodes, id)
 		}
 	}

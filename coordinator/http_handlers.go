@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/phuslu/log"
 	"net/http"
 )
 
@@ -20,10 +20,11 @@ func handleNodeAddition(c *Coordinator, w http.ResponseWriter, r *http.Request) 
 	var node GameNode
 	if err := json.NewDecoder(r.Body).Decode(&node); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Error().Err(err).Msg("Failed to decode node")
 		return
 	}
 	c.AddNode(&node)
-	fmt.Fprintf(w, "Node added: %s\n", node.ID)
+	log.Info().Str("node_id", node.ID).Msg("Node added")
 }
 
 func handleNodeRemoval(c *Coordinator, w http.ResponseWriter, r *http.Request) {
@@ -33,5 +34,5 @@ func handleNodeRemoval(c *Coordinator, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	c.RemoveNode(nodeID)
-	fmt.Fprintf(w, "Node removed: %s\n", nodeID)
+	log.Info().Str("node_id", nodeID).Msg("Node removed")
 }
