@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	"github.com/phuslu/log"
 	"net/http"
 	"os"
 	"time"
@@ -16,7 +16,7 @@ func main() {
 	// Check if the coordinator URL is provided as an environment variable
 	coordinatorURL := os.Getenv("COORDINATOR_URL")
 	if coordinatorURL == "" {
-		log.Fatal("COORDINATOR_URL environment variable is not set")
+		log.Fatal().Msg("COORDINATOR_URL environment variable is not set")
 	}
 
 	// Create a GameNode instance
@@ -32,7 +32,8 @@ func main() {
 	// Register with the coordinator
 	err := worker.RegisterWithCoordinator(coordinatorURL, node)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err)
+		return
 	}
 
 	// Define the HTTP server and endpoint for receiving player data
@@ -43,7 +44,7 @@ func main() {
 	fmt.Printf("Worker HTTP server listening on %s...\n", serverAddr)
 	err = http.ListenAndServe(serverAddr, nil)
 	if err != nil {
-		log.Fatal("Error starting HTTP server:", err)
+		log.Fatal().Msgf("Error starting HTTP server: %s", err)
 	}
 }
 
@@ -59,9 +60,9 @@ func PlayerDataHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Process the player data (you can add your own logic here)
-	fmt.Printf("Received player data: %+v\n", playerData)
+	log.Info().Msgf("Received player data: %+v\n", playerData)
 
 	// Respond with a success message
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Player data received successfully")
+	log.Info().Msg("Player data received successfully")
 }

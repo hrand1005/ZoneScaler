@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"github.com/phuslu/log"
 )
 
 func main() {
-	fmt.Println("Starting gateway")
+	log.Info().Msg("Starting gateway")
 }
