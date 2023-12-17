@@ -1,9 +1,11 @@
-package main
+package coordinator
 
 import (
 	"encoding/json"
 	"github.com/phuslu/log"
 	"net/http"
+
+	"github.com/hrand1005/ZoneScaler/common"
 )
 
 // SetupHTTPHandlers sets up the HTTP routes
@@ -17,7 +19,7 @@ func SetupHTTPHandlers(coordinator *Coordinator) {
 }
 
 func handleNodeAddition(c *Coordinator, w http.ResponseWriter, r *http.Request) {
-	var node GameNode
+	var node common.GameNode
 	if err := json.NewDecoder(r.Body).Decode(&node); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		log.Error().Err(err).Msg("Failed to decode node")

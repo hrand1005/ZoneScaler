@@ -3,16 +3,18 @@ package main
 import (
 	"github.com/phuslu/log"
 	"net/http"
+
+	"github.com/hrand1005/ZoneScaler/coordinator"
 )
 
 func main() {
-	coordinator := NewCoordinator()
+	c := coordinator.New()
 
 	// Setup HTTP handlers
-	SetupHTTPHandlers(coordinator)
+	coordinator.SetupHTTPHandlers(c)
 
 	// Start heartbeat checker in a separate goroutine
-	go StartHeartbeatChecker(coordinator)
+	go coordinator.StartHeartbeatChecker(c)
 
 	log.Info().Msg("Coordinator server started on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
