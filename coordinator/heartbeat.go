@@ -1,11 +1,12 @@
 package coordinator
 
 import (
-	"github.com/phuslu/log"
 	"time"
+
+	"github.com/phuslu/log"
 )
 
-// StartHeartbeatChecker starts the heartbeat checking loop
+// StartHeartbeatChecker starts the heartbeat checking loop.
 func StartHeartbeatChecker(c *Coordinator) {
 	for {
 		time.Sleep(30 * time.Second)

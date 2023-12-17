@@ -1,23 +1,34 @@
 package main
 
 import (
-	"github.com/phuslu/log"
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/hrand1005/ZoneScaler/coordinator"
+	"github.com/phuslu/log"
 )
 
 func main() {
+	if len(os.Args) < 2 {
+		log.Fatal().Msg("Usage: ./coordinator <JSON config>")
+	}
+
+	conf, err := coordinator.LoadConfig(os.Args[1])
+	if err != nil {
+		log.Fatal().Err(err).Msg("Failed to load config")
+	}
+
 	c := coordinator.New()
 
-	// Setup HTTP handlers
-	coordinator.SetupHTTPHandlers(c)
+	http.HandleFunc("/add-node", c.AddNodeHandler)
+	http.HandleFunc("/remove-node", c.RemoveNodeHandler)
 
-	// Start heartbeat checker in a separate goroutine
 	go coordinator.StartHeartbeatChecker(c)
 
-	log.Info().Msg("Coordinator server started on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	coordinatorPort := fmt.Sprintf(":%d", conf.Port)
+	log.Info().Msgf("Coordinator server started on %s", coordinatorPort)
+	if err := http.ListenAndServe(coordinatorPort, nil); err != nil {
 		log.Fatal().Err(err).Msg("Failed to start HTTP server")
 	}
 }

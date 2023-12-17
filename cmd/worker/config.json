@@ -1,0 +1,7 @@
+{
+    "host": "127.0.0.1",
+    "port": 8081,
+    "coordinator-host": "127.0.0.1",
+    "coordinator-port": 8080
+}
+  
