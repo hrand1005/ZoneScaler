@@ -13,14 +13,21 @@ import (
 	"github.com/hrand1005/ZoneScaler/worker"
 )
 
+const (
+	maxRetries    = 30
+	retryInterval = 1 * time.Second
+)
+
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatal().Msg("Usage: ./coordinator <JSON config>")
+		return
 	}
 
 	conf, err := worker.LoadConfig(os.Args[1])
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to load config")
+		return
 	}
 
 	node := common.GameNode{
@@ -32,10 +39,19 @@ func main() {
 		LastHeartbeat: time.Now(),
 	}
 
-	coordinatorAddr := fmt.Sprintf("%v:%v", conf.CoordinatorHost, conf.CoordinatorPort)
-	err = worker.RegisterWithCoordinator(coordinatorAddr, node)
-	if err != nil {
-		log.Fatal().Err(err)
+	coordinatorAddr := fmt.Sprintf("%v:%v", os.Getenv("COORDINATOR_HOST"), os.Getenv("COORDINATOR_PORT"))
+
+	registered := false
+	for try := 0; try < maxRetries; try++ {
+		err = worker.RegisterWithCoordinator(coordinatorAddr, node)
+		if err == nil {
+			registered = true
+			break
+		}
+		time.Sleep(retryInterval)
+	}
+	if !registered {
+		log.Fatal().Err(err).Msg("Failed to register with the coordinator")
 		return
 	}
 
@@ -46,6 +62,7 @@ func main() {
 	if err = http.ListenAndServe(serverAddr, nil); err != nil {
 		if err != nil {
 			log.Fatal().Err(err).Msg("Failed to start HTTP server")
+			return
 		}
 	}
 }
