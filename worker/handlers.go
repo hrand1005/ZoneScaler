@@ -16,7 +16,7 @@ func PlayerDataHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to parse player data", http.StatusBadRequest)
 		return
 	}
-	log.Info().Msgf("Received player data: %+v\n", playerData)
+	log.Info().Msgf("Received player data: %+v", playerData)
 
 	w.WriteHeader(http.StatusOK)
 	log.Info().Msg("Player data received successfully")

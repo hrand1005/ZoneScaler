@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/phuslu/log"
 
 	"github.com/hrand1005/ZoneScaler/common"
@@ -23,7 +24,7 @@ func main() {
 	}
 
 	node := common.GameNode{
-		ID:            "unique-node-id",
+		ID:            uuid.NewString(),
 		Address:       fmt.Sprintf("%s:%d", conf.Host, conf.Port),
 		Load:          0,
 		Regions:       []string{"region1", "region2"},
@@ -41,7 +42,7 @@ func main() {
 	http.HandleFunc("/player", worker.PlayerDataHandler)
 
 	serverAddr := fmt.Sprintf(":%v", conf.Port)
-	log.Info().Msgf("Worker HTTP server listening on %s...\n", serverAddr)
+	log.Info().Msgf("Worker HTTP server listening on %s", serverAddr)
 	if err = http.ListenAndServe(serverAddr, nil); err != nil {
 		if err != nil {
 			log.Fatal().Err(err).Msg("Failed to start HTTP server")
