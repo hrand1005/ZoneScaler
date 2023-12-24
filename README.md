@@ -46,3 +46,11 @@ docker run -p 8081 worker-image
 ```
 
 Other scripts used during development are available in `scripts/`.
+
+# Configuration
+
+Example config files for each service are found in `cmd/<service_name>/config.json`.
+These typically include server configurations such as host and port numbers.
+Some services provide a simple frontend for visualization, diagnostics, logs etc.
+In these caess, the root directory for 'statically served' files is set by
+the `static_dir` field. For an example, check out [cmd/coordinator/config.json](cmd/coordinator/config.json).
