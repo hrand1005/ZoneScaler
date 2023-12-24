@@ -1,16 +1,28 @@
-FROM golang:1.20
+# Build stage
+FROM golang:1.20 as builder
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the entire worker application
-COPY ../../ .
+COPY . .
 
-# Build the worker application
-RUN go build -o wrk ./cmd/worker
+# Set the Go environment variables
+ENV GOOS=linux
+ENV GOARCH=amd64
 
-# Expose any necessary ports
+# Build the Go binary and gather necessary files
+RUN mkdir -p /app/tmp && \
+    go build -o /app/tmp/worker cmd/worker/main.go && \
+    cp cmd/worker/config.json /app/tmp/config.json
+
+# Runtime stage
+FROM alpine:3.19
+
+WORKDIR /app
+
+# Copy only the necessary artifacts from the builder stage
+COPY --from=builder /app/tmp/worker .
+COPY --from=builder /app/tmp/config.json .
+
 EXPOSE 8081
 
-# Command to run the application
-ENTRYPOINT [ "./wrk", "./cmd/worker/config.json" ]
+CMD ["./worker", "config.json"]
