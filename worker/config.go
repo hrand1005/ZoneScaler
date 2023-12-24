@@ -7,8 +7,10 @@ import (
 )
 
 type Config struct {
-	Host string `json:"host"`
-	Port int    `json:"port"`
+	CoordinatorHost string `json:"coordinator-host"`
+	CoordinatorPort string `json:"coordinator-port"`
+	Host            string `json:"host"`
+	Port            int    `json:"port"`
 }
 
 // LoadConfig parses worker configuration data from a JSON file.

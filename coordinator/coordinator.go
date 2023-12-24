@@ -22,8 +22,8 @@ func New() *Coordinator {
 // AddNode adds a new game node to the coordinator.
 func (c *Coordinator) AddNode(node *common.GameNode) {
 	c.nodesMutex.Lock()
+	defer c.nodesMutex.Unlock()
 	c.nodes[node.ID] = node
-	c.nodesMutex.Unlock()
 }
 
 // RemoveNode removes a game node from the coordinator.

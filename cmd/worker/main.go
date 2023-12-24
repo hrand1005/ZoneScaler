@@ -9,7 +9,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/phuslu/log"
 
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hrand1005/ZoneScaler/common"
+	"github.com/hrand1005/ZoneScaler/game"
 	"github.com/hrand1005/ZoneScaler/worker"
 )
 
@@ -17,6 +20,20 @@ const (
 	maxRetries    = 30
 	retryInterval = 1 * time.Second
 )
+
+type Game struct{}
+
+func (g *Game) Update() error {
+	return nil
+}
+
+func (g *Game) Draw(screen *ebiten.Image) {
+	ebitenutil.DebugPrint(screen, "Hello, World!")
+}
+
+func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+	return 320, 240
+}
 
 func main() {
 	if len(os.Args) < 2 {
@@ -39,9 +56,11 @@ func main() {
 		LastHeartbeat: time.Now(),
 	}
 
-	coordinatorAddr := fmt.Sprintf("%v:%v", os.Getenv("COORDINATOR_HOST"), os.Getenv("COORDINATOR_PORT"))
+	//coordinatorAddr := fmt.Sprintf("%v:%v", os.Getenv("COORDINATOR_HOST"), os.Getenv("COORDINATOR_PORT"))
+	coordinatorAddr := fmt.Sprintf("%v:%v", conf.CoordinatorHost, conf.CoordinatorPort)
 
 	registered := false
+
 	for try := 0; try < maxRetries; try++ {
 		err = worker.RegisterWithCoordinator(coordinatorAddr, node)
 		if err == nil {
@@ -57,12 +76,20 @@ func main() {
 
 	http.HandleFunc("/player", worker.PlayerDataHandler)
 
-	serverAddr := fmt.Sprintf(":%v", conf.Port)
-	log.Info().Msgf("Worker HTTP server listening on %s", serverAddr)
-	if err = http.ListenAndServe(serverAddr, nil); err != nil {
-		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to start HTTP server")
-			return
+	// Run HTTP server in a goroutine
+	go func() {
+		serverAddr := fmt.Sprintf(":%v", conf.Port)
+		log.Info().Msgf("Worker HTTP server listening on %s", serverAddr)
+		if err := http.ListenAndServe(serverAddr, nil); err != nil && err != http.ErrServerClosed {
+			log.Error().Err(err).Msg("HTTP server failed")
 		}
+	}()
+
+	// Ebiten game loop runs in the main thread
+	ebitenGame := game.NewGame()
+	ebiten.SetWindowSize(800, 800)
+	ebiten.SetWindowTitle("Hello, World!")
+	if err := ebiten.RunGame(ebitenGame); err != nil {
+		log.Fatal().Err(err).Msg("Ebiten RunGame failed")
 	}
 }
