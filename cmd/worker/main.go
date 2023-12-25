@@ -39,8 +39,8 @@ func main() {
 		LastHeartbeat: time.Now(),
 	}
 
-	//coordinatorAddr := fmt.Sprintf("%v:%v", os.Getenv("COORDINATOR_HOST"), os.Getenv("COORDINATOR_PORT"))
-	coordinatorAddr := fmt.Sprintf("%v:%v", conf.CoordinatorHost, conf.CoordinatorPort)
+	coordinatorAddr := fmt.Sprintf("%v:%v", os.Getenv("COORDINATOR_HOST"), os.Getenv("COORDINATOR_PORT"))
+	//coordinatorAddr := fmt.Sprintf("%v:%v", conf.CoordinatorHost, conf.CoordinatorPort)
 
 	registered := false
 

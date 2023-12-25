@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	playerSize = 20 // Size of the player
+	playerSize  = 20 // Size of the player
+	PlayerSpeed = 4.0
 )
 
 type Player struct {
@@ -23,38 +24,25 @@ func NewPlayer() *Player {
 
 func (p *Player) Update() {
 	// Handle player movement
-	speed := 2.0 // Speed of the player
 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
-		p.X -= speed
+		p.X -= PlayerSpeed
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowRight) {
-		p.X += speed
+		p.X += PlayerSpeed
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
-		p.Y -= speed
+		p.Y -= PlayerSpeed
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
-		p.Y += speed
+		p.Y += PlayerSpeed
 	}
 
-	// Keep the player within the window bounds
-	if p.X < 0 {
-		p.X = 0
-	}
-	if p.Y < 0 {
-		p.Y = 0
-	}
+	// Adjust the boundary check considering the zoom factor
+	maxPosX := float64(GridSize*GridCountX) - float64(playerSize)/ZoomFactor
+	maxPosY := float64(GridSize*GridCountY) - float64(playerSize)/ZoomFactor
 
-	// Adjust the boundary check to account for the player's size
-	maxPosX := float64(3*GridSize + GridSize - playerSize)
-	maxPosY := float64(3*GridSize + GridSize - playerSize)
-
-	if p.X > maxPosX {
-		p.X = maxPosX
-	}
-	if p.Y > maxPosY {
-		p.Y = maxPosY
-	}
+	p.X = clamp(p.X, 0, maxPosX)
+	p.Y = clamp(p.Y, 0, maxPosY)
 }
 
 func (p *Player) Draw(screen *ebiten.Image) {
