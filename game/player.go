@@ -38,8 +38,8 @@ func (p *Player) Update() {
 	}
 
 	// Adjust the boundary check considering the zoom factor
-	maxPosX := float64(GridSize*GridCountX) - float64(playerSize)/ZoomFactor
-	maxPosY := float64(GridSize*GridCountY) - float64(playerSize)/ZoomFactor
+	maxPosX := float64(GridSize*GridCountX) - float64(playerSize)
+	maxPosY := float64(GridSize*GridCountY) - float64(playerSize)
 
 	p.X = clamp(p.X, 0, maxPosX)
 	p.Y = clamp(p.Y, 0, maxPosY)

@@ -42,9 +42,9 @@ func (c *Camera) Update(playerX, playerY float64) {
 		}
 	}
 
-	// Clamp the camera position to the game world boundaries
-	maxCameraX := float64(GridSize*GridCountX) - float64(screenWidth)
-	maxCameraY := float64(GridSize*GridCountY) - float64(screenHeight)
+	// Clamp the camera position to the game world boundaries + some extra space
+	maxCameraX := float64(GridSize*GridCountX) - 2*float64(screenWidth)/3
+	maxCameraY := float64(GridSize*GridCountY) - 2*float64(screenHeight)/3
 
 	c.X = clamp(c.X, 0, maxCameraX)
 	c.Y = clamp(c.Y, 0, maxCameraY)
