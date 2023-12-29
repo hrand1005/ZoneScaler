@@ -8,7 +8,7 @@ import (
 
 const (
 	playerSize  = 20 // Size of the player
-	PlayerSpeed = 4.0
+	playerSpeed = 4.0
 )
 
 type Player struct {
@@ -25,16 +25,16 @@ func NewPlayer() *Player {
 func (p *Player) Update() {
 	// Handle player movement
 	if ebiten.IsKeyPressed(ebiten.KeyArrowLeft) {
-		p.X -= PlayerSpeed
+		p.X -= playerSpeed
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowRight) {
-		p.X += PlayerSpeed
+		p.X += playerSpeed
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
-		p.Y -= PlayerSpeed
+		p.Y -= playerSpeed
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
-		p.Y += PlayerSpeed
+		p.Y += playerSpeed
 	}
 
 	// Adjust the boundary check considering the zoom factor

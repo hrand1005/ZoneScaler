@@ -43,9 +43,9 @@ func drawGrid(screen *ebiten.Image) {
 }
 
 func applyCameraTransformations(op *ebiten.DrawImageOptions, camera *Camera, player *Player) {
-	Width, Height := ebiten.WindowSize()
-	cameraOffsetX := camera.X - float64(Width)/(2*ZoomFactor)
-	cameraOffsetY := camera.Y - float64(Height)/(2*ZoomFactor)
+	windowWidth, windowHeight := ebiten.WindowSize()
+	cameraOffsetX := camera.X - float64(windowWidth)/(2*ZoomFactor)
+	cameraOffsetY := camera.Y - float64(windowHeight)/(2*ZoomFactor)
 
 	op.GeoM.Translate(-cameraOffsetX, -cameraOffsetY)
 	op.GeoM.Scale(ZoomFactor, ZoomFactor)
