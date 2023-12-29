@@ -9,7 +9,7 @@ import (
 )
 
 func drawPlayerGridPosition(screen *ebiten.Image, player *Player) {
-	GridX, GridY := player.GridPosition()
+	gridX, gridY := player.GridPosition()
 	sampleText := fmt.Sprintf("Grid Position: %d, %d", GridX, GridY)
 	text.Draw(screen, sampleText, mplusBigFont, 15, 150, color.White)
 }
