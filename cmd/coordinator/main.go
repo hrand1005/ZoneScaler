@@ -21,8 +21,8 @@ func main() {
 
 	c := coordinator.New()
 
-	http.HandleFunc("/add-node", c.AddNodeHandler)
-	http.HandleFunc("/remove-node", c.RemoveNodeHandler)
+	http.Handle("/", http.FileServer(http.Dir(conf.StaticDir)))
+	http.HandleFunc("/nodes", c.NodesHandler)
 
 	go coordinator.StartHeartbeatChecker(c)
 

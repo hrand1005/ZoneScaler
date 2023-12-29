@@ -1,4 +1,3 @@
 #!/bin/bash
 
-go build -o crd cmd/coordinator/main.go
-./crd cmd/coordinator/config.json
+go run cmd/coordinator/main.go cmd/coordinator/config.json

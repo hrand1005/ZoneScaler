@@ -1,4 +1,25 @@
 # ZoneScaler Design Document
+
+## Contents
+
+1. [Introduction](#introduction)
+2. [Architectural Overview](#architectural-overview)
+    - [Coordinator Node](#coordinator-node)
+    - [Worker Servers](#worker-servers)
+3. [Load Balancing](#load-balancing)
+    - [Fault Tolerance](#fault-tolerance)
+4. [Cross-Partition Interaction](#cross-partition-interaction)
+5. [Questions and Considerations](#questions-and-considerations)
+    - [State Synchronization](#state-synchronization)
+    - [Recovery Strategy](#recovery-strategy)
+    - [Proxied Entities](#proxied-entities)
+6. [Possible Approaches](#possible-approaches)
+    - [Scalability](#scalability)
+    - [Consistency Model](#consistency-model)
+    - [Monitoring and Metrics](#monitoring-and-metrics)
+    - [Community and Open Source Strategy](#community-and-open-source-strategy)
+7. [Conclusion](#conclusion)
+
 ## Introduction
 ZoneScaler is a cutting-edge distributed game server framework designed to scale horizontally and manage dynamic loads across multiple servers. This document outlines the architectural design, features, and considerations for developing the ZoneScaler framework.
 

@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  coordinator:
+    build:
+      context: ./
+      dockerfile: ./cmd/coordinator/Dockerfile
+    ports:
+      - "8080:8080"
+
+  worker:
+    build:
+      context: ./
+      dockerfile: ./cmd/worker/Dockerfile
+    ports:
+      - "8081:8081"
+    depends_on:
+      - coordinator
+    environment:
+      - COORDINATOR_HOST=coordinator
+      - COORDINATOR_PORT=8080

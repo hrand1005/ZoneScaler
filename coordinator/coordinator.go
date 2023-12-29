@@ -29,6 +29,19 @@ func (c *Coordinator) AddNode(node *common.GameNode) {
 // RemoveNode removes a game node from the coordinator.
 func (c *Coordinator) RemoveNode(nodeID string) {
 	c.nodesMutex.Lock()
-	defer c.nodesMutex.Unlock()
 	delete(c.nodes, nodeID)
+	c.nodesMutex.Unlock()
+}
+
+func (c *Coordinator) CopyNodes() map[string]*common.GameNode {
+	c.nodesMutex.RLock()
+
+	copiedNodes := make(map[string]*common.GameNode)
+	for id, node := range c.nodes {
+		copiedNode := node.Copy()
+		copiedNodes[id] = copiedNode
+	}
+	c.nodesMutex.RUnlock()
+
+	return copiedNodes
 }

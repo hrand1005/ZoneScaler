@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	Host string `json:"host"`
-	Port int    `json:"port"`
+	Host      string `json:"host"`
+	Port      int    `json:"port"`
+	StaticDir string `json:"static_dir"`
 }
 
 func LoadConfig(filename string) (Config, error) {

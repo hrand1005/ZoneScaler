@@ -1,4 +1,6 @@
 #!/bin/bash
 
-go build -o wrk cmd/worker/main.go
-./wrk cmd/worker/config.json
+export COORDINATOR_HOST="localhost"
+export COORDINATOR_PORT="8080"
+
+go run cmd/worker/main.go cmd/worker/config.json

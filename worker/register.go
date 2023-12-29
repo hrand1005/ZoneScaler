@@ -18,7 +18,7 @@ func RegisterWithCoordinator(coordinatorURL string, node common.GameNode) error 
 		return err
 	}
 
-	addNodeURL := fmt.Sprintf("http://%v/add-node", coordinatorURL)
+	addNodeURL := fmt.Sprintf("http://%v/nodes", coordinatorURL)
 	resp, err := http.Post(addNodeURL, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		log.Error().Err(err).Msg("failed to register with coordinator")
