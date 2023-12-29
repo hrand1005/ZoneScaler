@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/hrand1005/ZoneScaler/examples/game"
 	"github.com/phuslu/log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hrand1005/ZoneScaler/game"
 )
 
 func main() {
