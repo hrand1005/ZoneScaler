@@ -27,7 +27,6 @@ func main() {
 	conf, err := worker.LoadConfig(os.Args[1])
 	if err != nil {
 		log.Fatal().Err(err).Msgf("Failed to load config")
-		return
 	}
 
 	node := common.GameNode{
