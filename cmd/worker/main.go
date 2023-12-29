@@ -21,7 +21,6 @@ const (
 func main() {
 	if len(os.Args) < 2 {
 		log.Fatal().Msg("Usage: ./coordinator <JSON config>")
-		return
 	}
 
 	conf, err := worker.LoadConfig(os.Args[1])
