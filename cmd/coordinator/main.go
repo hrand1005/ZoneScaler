@@ -1,10 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
 	"os"
 
+	"github.com/hrand1005/ZoneScaler/common"
 	"github.com/hrand1005/ZoneScaler/coordinator"
 	"github.com/phuslu/log"
 )
@@ -19,16 +18,7 @@ func main() {
 		log.Fatal().Err(err).Msg("Failed to load config")
 	}
 
-	c := coordinator.New()
-
-	http.Handle("/", http.FileServer(http.Dir(conf.StaticDir)))
-	http.HandleFunc("/nodes", c.NodesHandler)
-
-	go coordinator.StartHeartbeatChecker(c)
-
-	coordinatorPort := fmt.Sprintf(":%d", conf.Port)
-	log.Info().Msgf("Coordinator server started on %s", coordinatorPort)
-	if err := http.ListenAndServe(coordinatorPort, nil); err != nil {
-		log.Fatal().Err(err).Msg("Failed to start HTTP server")
-	}
+	// pass in empty game data for now
+	c := coordinator.New(conf, &common.GameData{})
+	c.Start()
 }
