@@ -57,19 +57,3 @@ func (c *Coordinator) DeleteNodeHandler(w http.ResponseWriter, r *http.Request) 
 	c.RemoveNode(nodeID)
 	log.Info().Str("node_id", nodeID).Msg("Node removed")
 }
-
-// TODO: expose endpoints so that workers may request game partitions
-func (c *Coordinator) PartitionsHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodGet:
-		c.RequestPartitionHandler(w, r)
-	default:
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-}
-
-func (c *Coordinator) RequestPartitionHandler(w http.ResponseWriter, r *http.Request) {
-	// TODO: get next unassigned 'ready' partition using some configurable
-	// scheduling policy, provide it to the worker, update c.partitions map
-	http.Error(w, "Partition assignment not implemented", http.StatusMethodNotAllowed)
-}

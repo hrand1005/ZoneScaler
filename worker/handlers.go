@@ -21,3 +21,20 @@ func PlayerDataHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	log.Info().Msg("Player data received successfully")
 }
+
+// TODO: expose endpoints so that workers may be assigned game partitions
+func (wr *Worker) PartitionsHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		wr.AssignPartitionHandler(w, r)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}
+
+func (wr *Worker) AssignPartitionHandler(w http.ResponseWriter, r *http.Request) {
+	// TODO: unmarshal partition data
+	// wr.partitions = append(wr.partitions, partition)
+
+	http.Error(w, "Partition assignment not implemented", http.StatusMethodNotAllowed)
+}
