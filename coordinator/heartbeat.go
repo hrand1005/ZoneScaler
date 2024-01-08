@@ -6,15 +6,15 @@ import (
 	"github.com/phuslu/log"
 )
 
-// StartHeartbeatChecker starts the heartbeat checking loop.
-func StartHeartbeatChecker(c *Coordinator) {
+// startHeartbeatChecker starts the heartbeat checking loop.
+func (c *Coordinator) startHeartbeatChecker() {
 	for {
 		time.Sleep(30 * time.Second)
-		checkHeartbeat(c)
+		c.checkHeartbeat()
 	}
 }
 
-func checkHeartbeat(c *Coordinator) {
+func (c *Coordinator) checkHeartbeat() {
 	c.nodesMutex.Lock()
 	defer c.nodesMutex.Unlock()
 	for id, node := range c.nodes {
